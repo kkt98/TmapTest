@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class DataClass(
     @SerializedName("features")
-    val features: List<Feature>,
-    @SerializedName("type")
-    val type: String
+    val features: MutableList<Feature>,
+//    @SerializedName("type")
+//    val type: String
 )
