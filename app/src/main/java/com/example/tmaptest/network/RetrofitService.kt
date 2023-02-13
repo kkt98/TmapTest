@@ -19,7 +19,8 @@ interface RetrofitService {
         @Query("endX") endX: Float?,
         @Query("endY") endY: Float?,
         @Query("startName") startName: String,
-        @Query("endName") endName: String
+        @Query("endName") endName: String,
+        @Query("searchOption") searchOption:String
     ): Call<DataClass>
 
 }
