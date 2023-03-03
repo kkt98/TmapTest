@@ -2,10 +2,13 @@ package com.example.tmaptest
 
 import android.Manifest
 import android.graphics.Color
+import android.location.Geocoder
 import android.location.Location
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
@@ -22,7 +25,9 @@ import com.skt.Tmap.TMapRenderer.TILETYPE_ENGLISHTILE
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.IOException
 import java.net.URLEncoder
+import java.util.*
 
 
 class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallback {
@@ -32,6 +37,9 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 
     var Latitude: Double? = null
     var Longitude: Double? = null
+
+    var geoLat: Double? = null
+    var geoLng: Double? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,24 +64,53 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         tmapgps.minDistance = 5F
 
         tmapgps.OpenGps()
-        //tMapView?.setCenterPoint(126.9784147, 37.5666805) //지도의 중심좌표를 이동
-        //현재 위치로 표시될 좌표
 
-//        val tpoint: TMapPoint = tMapView!!.locationPoint // 현재위치로 표시되는 좌표의 위도, 경도를 반환합니다
-//        Latitude = tpoint.latitude
-//        Longitude = tpoint.longitude
-//
-//        tMapView?.setLocationPoint(Latitude!!, Longitude!!)
+        binding.searchView.setOnKeyListener { view, keyCode, event ->
+            // Enter Key Action
+            if (event.action == KeyEvent.ACTION_DOWN
+                && keyCode == KeyEvent.KEYCODE_ENTER
+            ) {
+//                tMapView!!.removeAllTMapPolyLine()
 
-//        Road()
+                // 키패드 내리기
+                val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(binding.searchView.windowToken, 0)
 
+                val geocoder = Geocoder(this, Locale.KOREA)
+
+                try {
+                    val addressList = geocoder.getFromLocationName(binding.searchView.text.toString(), 3) //최대 3개
+                    val buffer = StringBuffer()
+                    for (address in addressList!!) {
+                        val lat = address.latitude //위도
+                        val lng = address.longitude //경도
+                        buffer.append("$lat , $lng\n")
+                    }
+                    geoLat = addressList[0].latitude
+                    geoLng = addressList[0].longitude
+                    android.app.AlertDialog.Builder(this).setMessage(buffer.toString()).create()
+                        .show()
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+
+                Toast.makeText(this, "${binding.searchView.text}", Toast.LENGTH_SHORT).show()
+
+                startRetrofit()
+                true
+            }
+
+            false
+        }
+
+        //지오코딩 작업을 수행하는 객체 생성
     }
 
     var features: MutableList<Feature> = ArrayList()
     var aaaa: MutableList<Any> = mutableListOf()
     var s: String? = null
 
-    private fun startRetrofit(p0: Location?) {
+    private fun startRetrofit() {
 
         val START = "출발"
         val END = "도착"
@@ -83,10 +120,10 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 
         val call = RetrofitHelper.getRetrofitInstance("https://apis.openapi.sk.com/")
         call.create(RetrofitService::class.java).directions(
-            p0?.longitude?.toFloat(),
-            p0?.latitude?.toFloat(),
-            126.9784147.toFloat(),
-            37.5666805.toFloat(),
+            Longitude?.toFloat(),
+            Latitude?.toFloat(),
+            geoLng?.toFloat(),
+            geoLat?.toFloat(),
             START_ENCODE,
             END_ENCODE,
             0.toString()
@@ -118,12 +155,11 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 
                 val tMapPolyLine = TMapPolyLine()
                 tMapPolyLine.lineColor = Color.BLUE
-                tMapPolyLine.lineWidth = 2f
+                tMapPolyLine.lineWidth = 1f
 
                 list.forEach {location ->
 
                     tMapPolyLine.addLinePoint(TMapPoint(location[1].toDouble(), location[0].toDouble()))
-
 
                 }
 
@@ -141,31 +177,6 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 
         })
 
-    }
-
-    private fun Road() {
-
-        val thread = object : Thread() {
-            override fun run() {
-                Log.i("aab", "$Latitude $Longitude")
-                val tMapPointStart = TMapPoint(37.563685889, 126.975584404) // 시청역(출발지)
-
-                val tMapPointEnd = TMapPoint(37.551135, 126.988205) // N서울타워(목적지)
-
-
-                val tMapPolyLine = TMapData().findPathDataWithType(
-                    TMapData.TMapPathType.PEDESTRIAN_PATH,
-                    tMapPointStart,
-                    tMapPointEnd
-                )
-                tMapPolyLine.lineColor = 0xFF000000.toInt()
-                tMapPolyLine.lineWidth = 2f
-                tMapView!!.addTMapPolyLine("Line1", tMapPolyLine)
-
-            }
-        }
-
-        thread.start()
     }
 
     private fun tedPermission() {
@@ -193,12 +204,18 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
     override fun onLocationChange(p0: Location?) {
         tMapView?.setLocationPoint(p0?.longitude ?: 37.5666805, p0?.latitude ?: 126.9784147)
 
-        Log.i("aaaaa", p0?.latitude.toString()+ " " + p0?.longitude)
+//        Log.i("aaaaa", p0?.latitude.toString()+ " " + p0?.longitude)
 
-        startRetrofit(p0)
+        Longitude = p0?.longitude
+        Latitude = p0?.latitude
+
+        Log.i("aaa", Longitude.toString() + " + " + Latitude.toString())
+
     }
 
 }
+
+
 
 
 // https://apis.openapi.sk.com/

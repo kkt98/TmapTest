@@ -7,65 +7,40 @@
     tools:context=".MainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layout1"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/SampleTmap">
-
-        <Button
-            android:id="@+id/firstBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/secondBtn"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:text="추천"/>
-
-        <Button
-            android:id="@+id/secondBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/thirdBtn"
-            app:layout_constraintStart_toEndOf="@+id/firstBtn"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintHorizontal_weight="1"
-            android:text="대로우선"/>
-
-        <Button
-            android:id="@+id/thirdBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/fourthBtn"
-            app:layout_constraintStart_toEndOf="@+id/secondBtn"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintHorizontal_weight="1"
-            android:text="최단거리"/>
-
-        <Button
-            android:id="@+id/fourthBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toEndOf="@+id/thirdBtn"
-            app:layout_constraintTop_toTopOf="parent"
-            android:text="계단제외"/>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/SampleTmap"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@+id/layout1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="0dp" />
+
+    <EditText
+        android:id="@+id/searchView"
+        android:layout_width="match_parent"
+        android:layout_height="51.32dp"
+        android:layout_marginTop="28.68dp"
+        android:layout_marginEnd="66dp"
+        android:layout_marginStart="66dp"
+        android:imeOptions="actionGo"
+        android:singleLine="true"
+        android:queryHint="Search Here"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:background="@drawable/et_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/micIv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:src="@drawable/icon_mic"
+        app:layout_constraintBottom_toBottomOf="@+id/searchView"
+        app:layout_constraintEnd_toEndOf="@+id/searchView"
+        app:layout_constraintTop_toTopOf="@+id/searchView"
+        app:layout_constraintVertical_bias="0.476" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
