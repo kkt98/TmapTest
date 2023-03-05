@@ -18,6 +18,7 @@ import com.example.tmaptest.modle.DataClass
 import com.example.tmaptest.modle.Feature
 import com.example.tmaptest.network.RetrofitHelper
 import com.example.tmaptest.network.RetrofitService
+import com.example.tmaptest.utill.Constants
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.normal.TedPermission
 import com.skt.Tmap.*
@@ -70,7 +71,10 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
             if (event.action == KeyEvent.ACTION_DOWN
                 && keyCode == KeyEvent.KEYCODE_ENTER
             ) {
-//                tMapView!!.removeAllTMapPolyLine()
+
+                tMapView!!.removeTMapPolyLine("Line1")
+
+                Log.i("abcd", "$Latitude, $Longitude, $geoLat, $geoLng")
 
                 // 키패드 내리기
                 val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
@@ -107,16 +111,12 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
     }
 
     var features: MutableList<Feature> = ArrayList()
-    var aaaa: MutableList<Any> = mutableListOf()
     var s: String? = null
 
     private fun startRetrofit() {
 
-        val START = "출발"
-        val END = "도착"
-
-        val START_ENCODE = URLEncoder.encode(START, "UTF-8")
-        val END_ENCODE = URLEncoder.encode(END, "UTF-8")
+        val START_ENCODE = URLEncoder.encode(Constants.START, "UTF-8")
+        val END_ENCODE = URLEncoder.encode(Constants.END, "UTF-8")
 
         val call = RetrofitHelper.getRetrofitInstance("https://apis.openapi.sk.com/")
         call.create(RetrofitService::class.java).directions(
@@ -132,6 +132,8 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
             override fun onResponse(call: Call<DataClass>, response: Response<DataClass>) {
 
                 val builder = AlertDialog.Builder(this@MainActivity)
+
+                val aaaa: MutableList<Any> = mutableListOf()
 
                 features = response.body()!!.features
 
