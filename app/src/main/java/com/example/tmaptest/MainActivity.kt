@@ -1,6 +1,9 @@
 package com.example.tmaptest
 
 import android.Manifest
+import android.R
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.location.Geocoder
 import android.location.Location
@@ -53,7 +56,6 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         tMapView = TMapView(this)
 
         tMapView?.setSKTMapApiKey("cfBsH5K5B2C0cde6c6Cdaq1VOAWQ4hL3CtCsq7q7")
-        //sampleTmap.addView(tMapView)
 
         tMapView?.setTrackingMode(true) //위치추적 모드
         tMapView?.setSightVisible(true) //
@@ -101,6 +103,13 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
                 Toast.makeText(this, "${binding.searchView.text}", Toast.LENGTH_SHORT).show()
 
                 startRetrofit()
+
+//                val marker = TMapMarkerItem()
+//                marker.id = "maker1"
+//                marker.setPosition(Latitude!!.toFloat(), Longitude!!.toFloat())
+//                marker.icon = BitmapFactory.decodeResource(resources, R.drawable.ic_menu_myplaces)
+//                tMapView!!.addMarkerItem("marker1", marker)
+
                 true
             }
 
@@ -159,12 +168,25 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
                 tMapPolyLine.lineColor = Color.BLUE
                 tMapPolyLine.lineWidth = 1f
 
+                var marker_lat: String? = null
+                var marker_lng: String? = null
                 list.forEach {location ->
 
                     tMapPolyLine.addLinePoint(TMapPoint(location[1].toDouble(), location[0].toDouble()))
 
+                    marker_lat = location[1]
+                    marker_lng = location[0]
                 }
 
+                val markerItem1 = TMapMarkerItem()
+                val tMapPoint1 = TMapPoint(marker_lat!!.toDouble(), marker_lng!!.toDouble()) // SKT타워
+                val bitmap: Bitmap = BitmapFactory.decodeResource(resources, R.drawable.ic_menu_myplaces)
+
+                markerItem1.icon = bitmap // 마커 아이콘 지정
+                markerItem1.setPosition(0.5f, 1.0f) // 마커의 중심점을 중앙, 하단으로 설정
+                markerItem1.tMapPoint = tMapPoint1 // 마커의 좌표 지정
+                markerItem1.name = "SKT타워" // 마커의 타이틀 지정
+                tMapView!!.addMarkerItem("markerItem1", markerItem1) // 지도에 마커 추가
 
                 tMapView!!.addTMapPolyLine("Line1", tMapPolyLine)
 
