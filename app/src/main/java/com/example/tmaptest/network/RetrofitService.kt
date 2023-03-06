@@ -1,7 +1,6 @@
 package com.example.tmaptest.network
 
 import com.example.tmaptest.modle.DataClass
-import com.example.tmaptest.modle.Geometry
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -20,11 +19,21 @@ interface RetrofitService {
         @Query("endY") endY: Float?,
         @Query("startName") startName: String,
         @Query("endName") endName: String,
-        @Query("searchOption") searchOption:String
+        @Query("searchOption") searchOption:String,
     ): Call<DataClass>
+
+    @GET("getVilageFcst?serviceKey=H7PvoIiO2D6%2BqVfe6kF2WAoJgdpbVUtJT52Wx7dL6%2BDLP4IEk5i5xqP%2BGZMDktix9xaYS03X6YP4JtLGSnuunw%3D%3D")
+    fun getWeather(
+        @Query("pageNo") pageNo : Int,
+        @Query("numOfRows") numOfRows : Int,
+        @Query("dataType") dataType : String,
+        @Query("base_date") baseDate : Int,
+        @Query("base_time") baseTime : Int,
+        @Query("nx") nx : Int,
+        @Query("ny") ny : Int,
+    ) : Call<com.example.tmaptest.weathermodle.WeatherDataClass>
 
 }
 
-//@Body startX: Double?, @Body startY:Double?, @Body endX:Double?, @Body endY:Double?, @Body startName:String, @Body endName:String
 
 

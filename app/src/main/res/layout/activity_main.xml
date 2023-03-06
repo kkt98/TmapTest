@@ -43,4 +43,15 @@
         app:layout_constraintTop_toTopOf="@+id/searchView"
         app:layout_constraintVertical_bias="0.476" />
 
+    <Button
+        android:id="@+id/weatherBtn"
+        android:layout_width="91dp"
+        android:layout_height="52dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="#F491FF"
+        android:text="날씨"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

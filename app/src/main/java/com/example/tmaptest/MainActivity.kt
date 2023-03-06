@@ -2,6 +2,7 @@ package com.example.tmaptest
 
 import android.Manifest
 import android.R
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
@@ -16,6 +17,8 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.example.tmaptest.MainActivity.myLocation.Latitude
+import com.example.tmaptest.MainActivity.myLocation.Longitude
 import com.example.tmaptest.databinding.ActivityMainBinding
 import com.example.tmaptest.modle.DataClass
 import com.example.tmaptest.modle.Feature
@@ -39,8 +42,12 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
     lateinit var binding: ActivityMainBinding
     var tMapView: TMapView? = null
 
-    var Latitude: Double? = null
-    var Longitude: Double? = null
+    object myLocation {
+
+        var Latitude: Double? = null
+        var Longitude: Double? = null
+
+    }
 
     var geoLat: Double? = null
     var geoLng: Double? = null
@@ -51,6 +58,11 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         setContentView(binding.root)
 
         tedPermission()
+
+        binding.weatherBtn.setOnClickListener {
+            val intent = Intent(this, WeatherActivity::class.java)
+            startActivity(intent)
+        }
 
         val sampleTmap = binding.SampleTmap
         tMapView = TMapView(this)
@@ -103,12 +115,6 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
                 Toast.makeText(this, "${binding.searchView.text}", Toast.LENGTH_SHORT).show()
 
                 startRetrofit()
-
-//                val marker = TMapMarkerItem()
-//                marker.id = "maker1"
-//                marker.setPosition(Latitude!!.toFloat(), Longitude!!.toFloat())
-//                marker.icon = BitmapFactory.decodeResource(resources, R.drawable.ic_menu_myplaces)
-//                tMapView!!.addMarkerItem("marker1", marker)
 
                 true
             }
@@ -179,7 +185,7 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
                 }
 
                 val markerItem1 = TMapMarkerItem()
-                val tMapPoint1 = TMapPoint(marker_lat!!.toDouble(), marker_lng!!.toDouble()) // SKT타워
+                val tMapPoint1 = TMapPoint(marker_lat!!.toDouble(), marker_lng!!.toDouble())
                 val bitmap: Bitmap = BitmapFactory.decodeResource(resources, R.drawable.ic_menu_myplaces)
 
                 markerItem1.icon = bitmap // 마커 아이콘 지정
