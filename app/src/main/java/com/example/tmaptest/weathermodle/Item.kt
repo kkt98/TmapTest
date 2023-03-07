@@ -4,10 +4,10 @@ package com.example.tmaptest.weathermodle
 import com.google.gson.annotations.SerializedName
 
 data class Item(
-    @SerializedName("baseDate")
-    val baseDate: String,
-    @SerializedName("baseTime")
-    val baseTime: String,
+//    @SerializedName("baseDate")
+//    val baseDate: String,
+//    @SerializedName("baseTime")
+//    val baseTime: String,
     @SerializedName("category")
     val category: String,
     @SerializedName("fcstDate")
@@ -16,8 +16,8 @@ data class Item(
     val fcstTime: String,
     @SerializedName("fcstValue")
     val fcstValue: String,
-    @SerializedName("nx")
-    val nx: Int,
-    @SerializedName("ny")
-    val ny: Int
+//    @SerializedName("nx")
+//    val nx: Int,
+//    @SerializedName("ny")
+//    val ny: Int
 )

@@ -1,6 +1,7 @@
 package com.example.tmaptest.network
 
 import com.example.tmaptest.modle.DataClass
+import com.example.tmaptest.weathermodle.WEATHER
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -22,7 +23,7 @@ interface RetrofitService {
         @Query("searchOption") searchOption:String,
     ): Call<DataClass>
 
-    @GET("getVilageFcst?serviceKey=H7PvoIiO2D6%2BqVfe6kF2WAoJgdpbVUtJT52Wx7dL6%2BDLP4IEk5i5xqP%2BGZMDktix9xaYS03X6YP4JtLGSnuunw%3D%3D")
+    @GET("getUltraSrtFcst?serviceKey=H7PvoIiO2D6%2BqVfe6kF2WAoJgdpbVUtJT52Wx7dL6%2BDLP4IEk5i5xqP%2BGZMDktix9xaYS03X6YP4JtLGSnuunw%3D%3D")
     fun getWeather(
         @Query("pageNo") pageNo : Int,
         @Query("numOfRows") numOfRows : Int,
@@ -31,7 +32,7 @@ interface RetrofitService {
         @Query("base_time") baseTime : Int,
         @Query("nx") nx : Int,
         @Query("ny") ny : Int,
-    ) : Call<com.example.tmaptest.weathermodle.WeatherDataClass>
+    ) : Call<WEATHER>
 
 }
 
